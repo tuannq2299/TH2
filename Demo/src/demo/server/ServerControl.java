@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class ServerControl{
     private Connection con;
     private ServerSocket myServer;
-    private int serverPort=3333;
+    private int serverPort=5555;
     
     public ServerControl(){
         getDBConnection("root","conga22071999");

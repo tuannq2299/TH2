@@ -163,8 +163,8 @@ public class ClientLoginView extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Users u=new Users();
-        u.setUsername(t1.getText());
-        u.setPass(t2.getText());
+        u.setUsername(t3.getText());
+        u.setPass(t4.getText());
         ClientControl control=new ClientControl();
         control.openConnection();
         control.sendData(u);
