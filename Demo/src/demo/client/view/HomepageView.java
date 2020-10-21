@@ -28,7 +28,7 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
      */
     Users user;
     ArrayList<Users> lf;
-    FriendsList f;
+    //FriendsList f;
     DefaultTableModel mod;
     JLabel lbIsOnl;
     JTable tabFr;
@@ -187,12 +187,18 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
                 ClientControl control = new ClientControl();
                 control.openConnection();
                 control.sendData(this.user);
-                FriendsList fl=control.receiveData1();
-                lf = f.getLf();
+                FriendsList fl=new FriendsList();
+                fl=control.receiveData1();
+                lf = fl.getLf();
                 if (fl.getLf().size() == 0) {
                     lbIsOnl.setText("You have no friend");
                 } else {
-                    int count = fl.(lf);
+                    int count=0;
+                    for(Users u:lf){
+                        if(u.getIsOnl()==1){
+                            count++;
+                        }
+                    }
                     lbIsOnl.setText(count + " FRIENDS IS ONLINE");
 
                     tabFr.getTableHeader().setFont(new Font("Arial", Font.BOLD, 20));

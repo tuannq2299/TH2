@@ -9,15 +9,15 @@ import demo.client.model.Users;
  */
 public class FriendsList {
     private Users user;
-    private ArrayList<Users>lf;
+    private ArrayList<Users>lf=new ArrayList<>();
 
     public FriendsList() {
-        lf=new ArrayList<>();
+        
     }
 
     public FriendsList(Users user) {
         this.user = user;
-        lf=new ArrayList<>();
+        
     }
 
     public Users getUser() {
@@ -26,6 +26,14 @@ public class FriendsList {
 
     public ArrayList<Users> getLf() {
         return lf;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    public void setLf(ArrayList<Users> lf) {
+        this.lf = lf;
     }
     
 }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ClientControl {
     private Socket mySocket;
     private String serverHost="localhost";
-    private int serverPort=5555;
+    private int serverPort=22222;
 
     public ClientControl() {
     }
@@ -61,6 +61,7 @@ public class ClientControl {
             Object o=is.readObject();
             if(o instanceof FriendsList){
                 rs=(FriendsList)o;
+                
             }
         }
         catch(Exception e){
