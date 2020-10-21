@@ -15,8 +15,7 @@ import java.util.ArrayList;
  */
 public class ServerFriendsListControl extends ServerControl implements Runnable{
     public ServerFriendsListControl() {
-        super();
-        
+        super();   
     }
     private void listening() {
         try{
@@ -25,9 +24,9 @@ public class ServerFriendsListControl extends ServerControl implements Runnable{
             ObjectOutputStream os=new ObjectOutputStream(clientSocket.getOutputStream());
             Object o=is.readObject();
             
-            if(o instanceof FriendsList){
-                FriendsList fl=(FriendsList)o;
-                fl.setUser(((FriendsList) o).getUser());
+            if(o instanceof Users){
+                Users u=(Users) o;
+                FriendsList fl=new FriendsList(u);
                 listFr(fl);
                 os.writeObject(fl);
             }

@@ -15,7 +15,6 @@ public class ServerLoginControl extends ServerControl implements Runnable{
 
     public ServerLoginControl() {
         super();
-        
     }
         
     
@@ -34,10 +33,6 @@ public class ServerLoginControl extends ServerControl implements Runnable{
                     os.writeObject("false");
                 }
             }
-//            if(o instanceof FriendsList){
-//                FriendsList fl=(FriendsList)o;
-//                fl=
-//            }
         }
         catch(Exception e){
             e.printStackTrace();

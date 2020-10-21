@@ -17,7 +17,6 @@ public class FriendsList {
 
     public FriendsList(Users user) {
         this.user = user;
-        
     }
 
     public Users getUser() {

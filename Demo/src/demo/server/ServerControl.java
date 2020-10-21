@@ -1,17 +1,9 @@
 package demo.server;
 
-import demo.client.model.FriendsList;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import demo.client.model.Users;
-import java.util.ArrayList;
 /**
  *
  * @author Lenovo
@@ -19,14 +11,11 @@ import java.util.ArrayList;
 public class ServerControl{
     protected Connection con;
     protected ServerSocket myServer;
-    protected int serverPort=22222;
+    protected int serverPort=22;
     
     public ServerControl(){
-        getDBConnection("root","conga22071999");
+        getDBConnection("root","551134");
         openServer(serverPort);
-//        while(true){
-//            listening();
-//        }
     }
 
     private void getDBConnection(String username, String pass) {
@@ -39,7 +28,6 @@ public class ServerControl{
         catch(Exception e){
             e.printStackTrace();
         }
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     private void openServer(int portNumber){
         try{

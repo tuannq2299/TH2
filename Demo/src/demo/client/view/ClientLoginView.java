@@ -177,10 +177,9 @@ public class ClientLoginView extends javax.swing.JFrame {
             t.start();
             this.setVisible(false);
         }  
-        else
-            showMessage("Invalid username/password");
-        control.closeConnection();
+        else showMessage("Invalid username/password");
         
+        control.closeConnection();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

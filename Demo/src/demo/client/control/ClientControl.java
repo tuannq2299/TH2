@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ClientControl {
     private Socket mySocket;
     private String serverHost="localhost";
-    private int serverPort=22222;
+    private int serverPort=22;
 
     public ClientControl() {
     }
