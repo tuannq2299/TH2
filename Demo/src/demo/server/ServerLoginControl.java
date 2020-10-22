@@ -24,15 +24,7 @@ public class ServerLoginControl extends ServerControl implements Runnable{
             ObjectInputStream is=new ObjectInputStream(clientSocket.getInputStream());
             ObjectOutputStream os=new ObjectOutputStream(clientSocket.getOutputStream());
             Object o=is.readObject();
-            if(o instanceof Users){
-                Users u=(Users)o;
-                if(checkUser(u)){
-                    os.writeObject("ok");
-                }
-                else{
-                    os.writeObject("false");
-                }
-            }
+            
         }
         catch(Exception e){
             e.printStackTrace();
@@ -40,23 +32,7 @@ public class ServerLoginControl extends ServerControl implements Runnable{
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private boolean checkUser(Users u) {
-        String sql="SELECT * FROM users WHERE username=? AND pass=?";
-        try{
-            PreparedStatement ps=con.prepareStatement(sql);
-            ps.setString(1, u.getUsername());
-            ps.setString(2, u.getPass());
-            ResultSet rs=ps.executeQuery();
-            if(rs.next()){
-                return true;
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        return false;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
     public void run() {

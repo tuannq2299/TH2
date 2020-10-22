@@ -187,50 +187,53 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
                 ClientControl control = new ClientControl();
                 control.openConnection();
                 control.sendData(this.user);
-                FriendsList fl=new FriendsList();
-                fl=control.receiveData1();
-                lf = fl.getLf();
-                if (fl.getLf().size() == 0) {
-                    lbIsOnl.setText("You have no friend");
-                } else {
-                    int count=0;
-                    for(Users u:lf){
-                        if(u.getIsOnl()==1){
-                            count++;
-                        }
-                    }
-                    lbIsOnl.setText(count + " FRIENDS IS ONLINE");
-
-                    tabFr.getTableHeader().setFont(new Font("Arial", Font.BOLD, 20));
-
-                    vcHead = new Vector();
-                    vcHead.add("Player");
-                    vcHead.add("Points");
-                    vcHead.add("Status");
-                    vcData = new Vector();
-
-                    for (Users u : lf) {
-                        if (u.getHoten() != user.getHoten()) {
-                            Vector row = new Vector();
-                            row.add(u.getHoten());
-                            row.add(u.getPoints());
-                            if (u.getIsOnl() == 1) {
-                                row.add("Online");
-                            } else {
-                                row.add("Offline");
+                FriendsList fl=control.receiveData1();
+                
+                if(fl!=null){
+                    lf = fl.getLf();
+                    if (fl.getLf().size() == 0) {
+                        lbIsOnl.setText("You have no friend");
+                    } else {
+                        int count=0;
+                        for(Users u:lf){
+                            if(u.getIsOnl()==1){
+                                count++;
                             }
-                            vcData.add(row);
                         }
-                        System.out.println(u.getHoten() + u.getIsOnl());
-                    }
+                        lbIsOnl.setText(count + " FRIENDS IS ONLINE");
 
-                    tabFr.setModel(new DefaultTableModel(vcData, vcHead));
-                    tabFr.getColumnModel().getColumn(0).setPreferredWidth(500);
-                    tabFr.getColumnModel().getColumn(1).setPreferredWidth(400);
-                    tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
-                    Thread.sleep(10000);
-                    mod.setRowCount(0);
+                        tabFr.getTableHeader().setFont(new Font("Arial", Font.BOLD, 20));
+
+                        vcHead = new Vector();
+                        vcHead.add("Player");
+                        vcHead.add("Points");
+                        vcHead.add("Status");
+                        vcData = new Vector();
+
+                        for (Users u : lf) {
+                            if (u.getHoten() != user.getHoten()) {
+                                Vector row = new Vector();
+                                row.add(u.getHoten());
+                                row.add(u.getPoints());
+                                if (u.getIsOnl() == 1) {
+                                    row.add("Online");
+                                } else {
+                                    row.add("Offline");
+                                }
+                                vcData.add(row);
+                            }
+                            System.out.println(u.getHoten() + u.getIsOnl());
+                        }
+
+                        tabFr.setModel(new DefaultTableModel(vcData, vcHead));
+                        tabFr.getColumnModel().getColumn(0).setPreferredWidth(500);
+                        tabFr.getColumnModel().getColumn(1).setPreferredWidth(400);
+                        tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
+                        Thread.sleep(10000);
+                        mod.setRowCount(0);
+                    }
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

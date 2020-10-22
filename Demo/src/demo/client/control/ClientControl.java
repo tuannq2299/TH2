@@ -14,8 +14,9 @@ import java.util.ArrayList;
 public class ClientControl {
     private Socket mySocket;
     private String serverHost="localhost";
-    private int serverPort=22;
-
+    private int serverPort=2222;
+    ObjectOutputStream os;
+    ObjectInputStream is;
     public ClientControl() {
     }
     public Socket openConnection(){
@@ -30,7 +31,7 @@ public class ClientControl {
     }
     public boolean sendData(Users u){
         try{
-            ObjectOutputStream os=new ObjectOutputStream(mySocket.getOutputStream());
+            os=new ObjectOutputStream(mySocket.getOutputStream());
             os.writeObject(u);
         }
         catch(Exception e){
@@ -42,7 +43,7 @@ public class ClientControl {
     public String receiveData(){
         String rs=null;
         try{
-            ObjectInputStream is=new ObjectInputStream(mySocket.getInputStream());
+            is=new ObjectInputStream(mySocket.getInputStream());
             Object o=is.readObject();
             if(o instanceof String){
                 rs=(String)o;
@@ -57,16 +58,15 @@ public class ClientControl {
     public FriendsList receiveData1(){
         FriendsList rs=null;
         try{
-            ObjectInputStream is=new ObjectInputStream(mySocket.getInputStream());
+            is=new ObjectInputStream(mySocket.getInputStream());
             Object o=is.readObject();
             if(o instanceof FriendsList){
-                rs=(FriendsList)o;
-                
+                rs=(FriendsList) o;
+                System.out.println(rs.getUser().getHoten());
             }
         }
         catch(Exception e){
             e.printStackTrace();
-            return null;
         }
         return rs;
     }
