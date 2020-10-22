@@ -36,7 +36,8 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     Vector vcHead;
     Vector vcData;
     ClientControl control;
-    public HomepageView(Users user) {
+    public HomepageView(Users user,ClientControl control) {
+        this.control=control;
         this.user = user;
         mod = new DefaultTableModel();
         initComponents();
@@ -184,11 +185,10 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     public void run() {
         while (true) {
             try {
-                control = new ClientControl();
-                control.openConnection();
+//                control = new ClientControl();
+//                control.openConnection();
                 control.sendData(this.user);
                 FriendsList fl=control.receiveFL();
-                
                 if(fl!=null){
                     lf = fl.getLf();
                     if (fl.getLf().size() == 0) {

@@ -171,7 +171,7 @@ public class ClientLoginView extends javax.swing.JFrame {
         String rs=control.receiveData();
         if(rs.equals("ok")){
             showMessage("Login successfully!");
-            HomepageView home=new HomepageView(u);
+            HomepageView home=new HomepageView(u,control);
             Thread t=new Thread(home);
             home.setVisible(true);
             t.start();
