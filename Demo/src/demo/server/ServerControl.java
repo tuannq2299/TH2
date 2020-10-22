@@ -60,6 +60,7 @@ public class ServerControl{
                 Users u=(Users)o;
                 if(checkUser(u)){
                     os.writeObject("ok");
+                    os.flush();
                     check=1;
                 }
                 else{
@@ -67,10 +68,15 @@ public class ServerControl{
                 }
             }
             if(o instanceof Users &&check==1){
+                os=new ObjectOutputStream(clientSocket.getOutputStream());
                 Users u=(Users) o;
                 FriendsList fl=new FriendsList(u);
                 fl.setLf(listFr(u));
                 os.writeObject(fl);
+//                for(Users i:fl.getLf()){
+//                    System.out.println(i.getHoten());
+//                }
+                os.flush();
             }
         }
         catch(Exception e){

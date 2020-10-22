@@ -2,10 +2,13 @@ package demo.client.control;
 
 import demo.client.model.FriendsList;
 import demo.client.model.Users;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,6 +36,7 @@ public class ClientControl {
         try{
             os=new ObjectOutputStream(mySocket.getOutputStream());
             os.writeObject(u);
+            os.flush();
         }
         catch(Exception e){
             e.printStackTrace();
@@ -47,6 +51,7 @@ public class ClientControl {
             Object o=is.readObject();
             if(o instanceof String){
                 rs=(String)o;
+                System.out.println(rs);
             }
         }
         catch(Exception e){
@@ -55,20 +60,20 @@ public class ClientControl {
         }
         return rs;
     }
-    public FriendsList receiveData1(){
-        FriendsList rs=null;
+    public FriendsList receiveFL(){
+        FriendsList fl=new FriendsList();
         try{
             is=new ObjectInputStream(mySocket.getInputStream());
             Object o=is.readObject();
             if(o instanceof FriendsList){
-                rs=(FriendsList) o;
-                System.out.println(rs.getUser().getHoten());
+                fl=(FriendsList) o;
+                //System.out.println(rs.getUser().getHoten());
             }
         }
         catch(Exception e){
             e.printStackTrace();
         }
-        return rs;
+        return fl;
     }
     public boolean closeConnection(){
         try{

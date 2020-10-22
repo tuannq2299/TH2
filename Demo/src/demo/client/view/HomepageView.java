@@ -35,7 +35,7 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     JScrollPane js;
     Vector vcHead;
     Vector vcData;
-
+    ClientControl control;
     public HomepageView(Users user) {
         this.user = user;
         mod = new DefaultTableModel();
@@ -184,10 +184,10 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     public void run() {
         while (true) {
             try {
-                ClientControl control = new ClientControl();
+                control = new ClientControl();
                 control.openConnection();
                 control.sendData(this.user);
-                FriendsList fl=control.receiveData1();
+                FriendsList fl=control.receiveFL();
                 
                 if(fl!=null){
                     lf = fl.getLf();
@@ -229,7 +229,7 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
                         tabFr.getColumnModel().getColumn(0).setPreferredWidth(500);
                         tabFr.getColumnModel().getColumn(1).setPreferredWidth(400);
                         tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
-                        Thread.sleep(10000);
+                        //Thread.sleep(10000);
                         mod.setRowCount(0);
                     }
                 }
