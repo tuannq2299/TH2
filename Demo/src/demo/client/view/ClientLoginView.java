@@ -15,6 +15,7 @@ public class ClientLoginView extends javax.swing.JFrame {
      */
     public ClientLoginView() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -183,7 +184,7 @@ public class ClientLoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        //new SignUpView(this, rootPaneCheckingEnabled).setVisible(true);
+        new SignUpView(this, rootPaneCheckingEnabled).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**

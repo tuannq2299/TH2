@@ -22,7 +22,9 @@ public class ServerControl{
     protected int serverPort=2222;
     ObjectInputStream is;
     ObjectOutputStream os;
+    ArrayList<Users>cmd;
     public ServerControl(){
+        cmd=new ArrayList<>();
         getDBConnection("root","conga22071999");
         openServer(serverPort);
         while(true){

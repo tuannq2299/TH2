@@ -51,7 +51,7 @@ public class ClientControl {
             Object o=is.readObject();
             if(o instanceof String){
                 rs=(String)o;
-                System.out.println(rs);
+                //System.out.println(rs);
             }
         }
         catch(Exception e){

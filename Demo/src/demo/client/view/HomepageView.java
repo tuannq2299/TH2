@@ -226,10 +226,10 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
                         }
 
                         tabFr.setModel(new DefaultTableModel(vcData, vcHead));
-                        tabFr.getColumnModel().getColumn(0).setPreferredWidth(500);
-                        tabFr.getColumnModel().getColumn(1).setPreferredWidth(400);
-                        tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
-                        //Thread.sleep(10000);
+//                        tabFr.getColumnModel().getColumn(0).setPreferredWidth(500);
+//                        tabFr.getColumnModel().getColumn(1).setPreferredWidth(400);
+//                        tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
+                        Thread.sleep(3000);
                         mod.setRowCount(0);
                     }
                 }
