@@ -1,6 +1,7 @@
 package demo.client.view;
 
 import demo.client.control.ClientControl;
+import demo.client.model.Package;
 import demo.client.model.Users;
 import javax.swing.JOptionPane;
 
@@ -13,9 +14,11 @@ public class ClientLoginView extends javax.swing.JFrame {
     /**
      * Creates new form ClientView
      */
+    ClientControl control;
     public ClientLoginView() {
         initComponents();
         setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -162,20 +165,26 @@ public class ClientLoginView extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public ClientControl getControl() {
+        return control;
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Users u=new Users();
         u.setUsername(t3.getText());
         u.setPass(t4.getText());
-        ClientControl control=new ClientControl();
-        control.openConnection();
-        control.sendData(u);
+        this.control=new ClientControl();
+        this.control.openConnection();
+        Package tmp = new Package(u, "1");
+        control.sendData(tmp);
+//        control.sendData(new Pair(u, "1"));
         String rs=control.receiveData();
         if(rs.equals("ok")){
             showMessage("Login successfully!");
             HomepageView home=new HomepageView(u,control);
             Thread t=new Thread(home);
-            home.setVisible(true);
             t.start();
+            home.setVisible(true);
             this.setVisible(false);
         }  
         else showMessage("Invalid username/password");

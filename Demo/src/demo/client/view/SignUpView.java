@@ -1,6 +1,7 @@
 package demo.client.view;
 
 import demo.client.control.ClientControl;
+import demo.client.model.Package;
 import javax.swing.JOptionPane;
 import demo.client.model.Users;
 import demo.client.view.ClientLoginView;
@@ -15,17 +16,15 @@ public class SignUpView extends javax.swing.JDialog {
      * Creates new form SignUpView
      */
     ClientLoginView loginview;
-    Users user;
-    public SignUpView(java.awt.Frame parent, boolean modal) {
+    ClientControl control;
+    public SignUpView(ClientLoginView parent, boolean modal) {
         super(parent, modal);
-        parent=loginview;
+        this.loginview=parent;
+        this.control=parent.getControl();
         initComponents();
         setLocationRelativeTo(parent);
     }
 
-    public Users getUser() {
-        return user;
-    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -117,10 +116,15 @@ public class SignUpView extends javax.swing.JDialog {
         user.setHoten(signUpname.getText());
         user.setUsername(signUpUsername.getText());
         user.setPass(signUpPass.getText());
-        this.user=user;
-        ClientControl control=new ClientControl();
-        control.openConnection();
-        control.sendData(user);
+        control.sendData(new Package(user, "3"));
+        String rs=control.receiveData();
+        if(rs.equals("ok")){
+            JOptionPane.showMessageDialog(rootPane, "Success");
+        }
+        else{
+            JOptionPane.showMessageDialog(rootPane, "Invalid");
+        }
+        //control.closeConnection();
     }//GEN-LAST:event_jButton1ActionPerformed
     
     public void showMessage(String s){
@@ -129,44 +133,7 @@ public class SignUpView extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SignUpView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SignUpView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SignUpView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SignUpView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                SignUpView dialog = new SignUpView(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

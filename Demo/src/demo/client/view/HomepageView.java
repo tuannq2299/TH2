@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import demo.client.model.FriendsList;
+import demo.client.model.Package;
 
 /**
  *
@@ -184,10 +185,11 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         while (true) {
+            
             try {
-//                control = new ClientControl();
-//                control.openConnection();
-                control.sendData(this.user);
+//                Thread.sleep(1000);
+                Package tmp = new Package(user, "2");
+                control.sendData(tmp);
                 FriendsList fl=control.receiveFL();
                 if(fl!=null){
                     lf = fl.getLf();
@@ -229,7 +231,7 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
 //                        tabFr.getColumnModel().getColumn(0).setPreferredWidth(500);
 //                        tabFr.getColumnModel().getColumn(1).setPreferredWidth(400);
 //                        tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
-                        Thread.sleep(3000);
+                        
                         mod.setRowCount(0);
                     }
                 }

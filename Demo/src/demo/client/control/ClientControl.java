@@ -1,6 +1,8 @@
 package demo.client.control;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
 import demo.client.model.FriendsList;
+import demo.client.model.Package;
 import demo.client.model.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 /**
  *
  * @author Lenovo
@@ -17,7 +20,7 @@ import java.util.logging.Logger;
 public class ClientControl {
     private Socket mySocket;
     private String serverHost="localhost";
-    private int serverPort=2222;
+    private int serverPort=1234;
     ObjectOutputStream os;
     ObjectInputStream is;
     public ClientControl() {
@@ -32,10 +35,11 @@ public class ClientControl {
         }
         return mySocket;
     }
-    public boolean sendData(Users u){
+    public boolean sendData(Package p){
         try{
             os=new ObjectOutputStream(mySocket.getOutputStream());
-            os.writeObject(u);
+            os.writeObject(p);
+            System.out.println(p.getCheck());
             os.flush();
         }
         catch(Exception e){
@@ -51,7 +55,7 @@ public class ClientControl {
             Object o=is.readObject();
             if(o instanceof String){
                 rs=(String)o;
-                //System.out.println(rs);
+                System.out.println(rs);
             }
         }
         catch(Exception e){
@@ -61,13 +65,14 @@ public class ClientControl {
         return rs;
     }
     public FriendsList receiveFL(){
+        System.out.println("Da nhan");
         FriendsList fl=new FriendsList();
         try{
             is=new ObjectInputStream(mySocket.getInputStream());
             Object o=is.readObject();
             if(o instanceof FriendsList){
                 fl=(FriendsList) o;
-                //System.out.println(rs.getUser().getHoten());
+                System.out.println(fl.getUser().getHoten());
             }
         }
         catch(Exception e){
