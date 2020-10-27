@@ -20,7 +20,7 @@ public class SignUpView extends javax.swing.JDialog {
     public SignUpView(ClientLoginView parent, boolean modal) {
         super(parent, modal);
         this.loginview=parent;
-        this.control=parent.getControl();
+        //this.control=parent.getControl();
         initComponents();
         setLocationRelativeTo(parent);
     }
@@ -116,6 +116,8 @@ public class SignUpView extends javax.swing.JDialog {
         user.setHoten(signUpname.getText());
         user.setUsername(signUpUsername.getText());
         user.setPass(signUpPass.getText());
+        control=new ClientControl();
+        control.openConnection();
         control.sendData(new Package(user, "3"));
         String rs=control.receiveData();
         if(rs.equals("ok")){
@@ -124,7 +126,7 @@ public class SignUpView extends javax.swing.JDialog {
         else{
             JOptionPane.showMessageDialog(rootPane, "Invalid");
         }
-        //control.closeConnection();
+        control.closeConnection();
     }//GEN-LAST:event_jButton1ActionPerformed
     
     public void showMessage(String s){

@@ -1,8 +1,11 @@
 package demo.client.view;
 
 import demo.client.control.ClientControl;
+import demo.client.model.FriendsList;
 import demo.client.model.Package;
 import demo.client.model.Users;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -178,10 +181,14 @@ public class ClientLoginView extends javax.swing.JFrame {
         Package tmp = new Package(u, "1");
         control.sendData(tmp);
 //        control.sendData(new Pair(u, "1"));
-        String rs=control.receiveData();
-        if(rs.equals("ok")){
+        FriendsList fl=control.receiveFL();
+        control.closeConnection();
+        tmp.setFl(fl);
+        tmp.setU(tmp.getFl().getUser());
+        if(fl instanceof FriendsList){
             showMessage("Login successfully!");
-            HomepageView home=new HomepageView(u,control);
+            HomepageView home=new HomepageView(tmp);
+            System.out.println(tmp.getU().getHoten());
             Thread t=new Thread(home);
             t.start();
             home.setVisible(true);

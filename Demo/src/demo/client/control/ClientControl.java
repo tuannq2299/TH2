@@ -39,8 +39,8 @@ public class ClientControl {
         try{
             os=new ObjectOutputStream(mySocket.getOutputStream());
             os.writeObject(p);
-            System.out.println(p.getCheck());
-            os.flush();
+            //System.out.println(p.getCheck());
+            //os.flush();
         }
         catch(Exception e){
             e.printStackTrace();
@@ -65,14 +65,14 @@ public class ClientControl {
         return rs;
     }
     public FriendsList receiveFL(){
-        System.out.println("Da nhan");
+        //System.out.println("Da nhan");
         FriendsList fl=new FriendsList();
         try{
             is=new ObjectInputStream(mySocket.getInputStream());
             Object o=is.readObject();
             if(o instanceof FriendsList){
                 fl=(FriendsList) o;
-                System.out.println(fl.getUser().getHoten());
+                //System.out.println(fl.getUser().getHoten());
             }
         }
         catch(Exception e){

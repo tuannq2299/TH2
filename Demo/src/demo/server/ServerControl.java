@@ -65,13 +65,15 @@ public class ServerControl {
             is = new ObjectInputStream(clientSocket.getInputStream());
             os = new ObjectOutputStream(clientSocket.getOutputStream());
             Package temp = (Package) is.readObject();
-            System.out.println(temp.getCheck());
+            System.out.println(temp.getU().getHoten()+temp.getCheck());
             String check = temp.getCheck();
             Users u = temp.getU();
             if (check.equals("1")) {
                 if (checkUser(u)) {
                     os.flush();
-                    os.writeObject("ok");
+                    FriendsList fl = new FriendsList(u);
+                    fl.setLf(listFr(u));
+                    os.writeObject(fl);
                     os.flush();
                 } else {
                     os.writeObject("false");
@@ -79,13 +81,11 @@ public class ServerControl {
                 }
             }
             else if (check.equals("2")) {
-                FriendsList fl = new FriendsList(u);
-                fl.setLf(listFr(u));
-                os.writeObject(fl);
-                for (Users i : fl.getLf()) {
-                    System.out.println(i.getHoten());
-                }
                 os.flush();
+                    FriendsList fl = new FriendsList(u);
+                    fl.setLf(listFr(u));
+                    os.writeObject(fl);
+                    os.flush();
             }
             else if (check.equals("3")) {
                 if (!checkUserExist(u)) {
@@ -98,6 +98,7 @@ public class ServerControl {
                 }
                 System.out.println(check);
             }
+            //clientSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

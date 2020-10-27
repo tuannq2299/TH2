@@ -27,7 +27,7 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     /**
      * Creates new form HomepageView
      */
-    Users user;
+    Package p;
     ArrayList<Users> lf;
     //FriendsList f;
     DefaultTableModel mod;
@@ -37,9 +37,10 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     Vector vcHead;
     Vector vcData;
     ClientControl control;
-    public HomepageView(Users user,ClientControl control) {
-        this.control=control;
-        this.user = user;
+    public HomepageView(Package p) {
+        this.control=new ClientControl();
+        control.openConnection();
+        this.p = p;
         mod = new DefaultTableModel();
         initComponents();
         setLocationRelativeTo(this);
@@ -47,7 +48,10 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
         lbIsOnl = new JLabel();
         lbIsOnl.setFont(new Font(lbIsOnl.getName(), Font.PLAIN, 18));
         friendsPane.add(lbIsOnl, BorderLayout.NORTH);
-        
+                        vcHead = new Vector();
+                        vcHead.add("Player");
+                        vcHead.add("Points");
+                        vcHead.add("Status");
         tabFr = new JTable(mod) {
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int rowIndex,
@@ -69,9 +73,6 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
         friendsPane.add(js, BorderLayout.CENTER);
     }
 
-    public Users getUser() {
-        return user;
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -187,10 +188,11 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
         while (true) {
             
             try {
-//                Thread.sleep(1000);
-                Package tmp = new Package(user, "2");
+                Package tmp = new Package(p.getU(), "2");
                 control.sendData(tmp);
-                FriendsList fl=control.receiveFL();
+                FriendsList fl;
+//                if(control.receiveFL()!=null)
+                    fl=control.receiveFL();
                 if(fl!=null){
                     lf = fl.getLf();
                     if (fl.getLf().size() == 0) {
@@ -205,15 +207,10 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
                         lbIsOnl.setText(count + " FRIENDS IS ONLINE");
 
                         tabFr.getTableHeader().setFont(new Font("Arial", Font.BOLD, 20));
-
-                        vcHead = new Vector();
-                        vcHead.add("Player");
-                        vcHead.add("Points");
-                        vcHead.add("Status");
                         vcData = new Vector();
 
                         for (Users u : lf) {
-                            if (u.getHoten() != user.getHoten()) {
+                            if (u.getHoten() != p.getU().getHoten()) {
                                 Vector row = new Vector();
                                 row.add(u.getHoten());
                                 row.add(u.getPoints());
@@ -233,6 +230,7 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
 //                        tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
                         
                         mod.setRowCount(0);
+                        Thread.sleep(1000);
                     }
                 }
 
