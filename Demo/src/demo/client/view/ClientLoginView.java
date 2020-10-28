@@ -186,11 +186,9 @@ public class ClientLoginView extends javax.swing.JFrame {
         tmp.setFl(fl);
         tmp.setU(tmp.getFl().getUser());
         if(fl instanceof FriendsList){
-            showMessage("Login successfully!");
+            //showMessage("Login successfully!");
             HomepageView home=new HomepageView(tmp);
             System.out.println(tmp.getU().getHoten());
-            Thread t=new Thread(home);
-            t.start();
             home.setVisible(true);
             this.setVisible(false);
         }  

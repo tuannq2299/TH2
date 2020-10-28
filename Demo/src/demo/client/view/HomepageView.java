@@ -21,6 +21,7 @@ import demo.client.model.Package;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ import javax.swing.JTextField;
  *
  * @author Lenovo
  */
-public class HomepageView extends javax.swing.JFrame implements Runnable {
+public class HomepageView extends javax.swing.JFrame {
 
     /**
      * Creates new form HomepageView
@@ -44,11 +45,9 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     JScrollPane js;
     Vector vcHead;
     Vector vcData;
-    ClientControl control;
 
     public HomepageView(Package p) {
-        this.control = new ClientControl();
-        control.openConnection();
+        
         this.p = p;
         mod = new DefaultTableModel();
         initComponents();
@@ -56,34 +55,25 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
         friendsPane.setLayout(new BorderLayout(20, 20));
         lbIsOnl = new JLabel();
         lbIsOnl.setFont(new Font(lbIsOnl.getName(), Font.PLAIN, 18));
-        JPanel pTop=new JPanel(new GridLayout(2, 1));
-        JPanel pTop1=new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        JLabel lblA=new JLabel("THÊM BẠN");
+        JPanel pTop = new JPanel(new GridLayout(2, 1, 10, 20));
+        JPanel pTop1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        JLabel lblA = new JLabel("ADD FRIEND");
         lblA.setFont(new Font(lblA.getName(), Font.PLAIN, 16));
         pTop1.add(lblA);
-        JTextField txt1=new JTextField(40);
-        JButton btnAddFr=new JButton("ADD");
-        btnAddFr.addActionListener((e) -> {
-            Users u=new Users();
-            u.setHoten(txt1.getText());
-            System.out.println(u.getHoten());
-            Package p1=new Package(p.getU(),"4");
-            p1.setU2(u);
-            if(p1.getFl()!=null)
-                p1.setFl(fl);
-            control.sendData(p1);
-            String rs=control.receiveData();
-            if(rs.equals("ok")){
-                JOptionPane.showMessageDialog(rootPane, "Success");
-            }
-            else{
-                JOptionPane.showMessageDialog(rootPane, "Invalid");
-            }
+        JTextField txt1 = new JTextField(40);
+        JButton btnAddFr = new JButton("ADD");
+        JPanel top2=new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        JButton btnRf=new JButton("REFRESS");
+        btnRf.addActionListener((ActionEvent e) -> {
+            process();
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         });
+        top2.add(lbIsOnl);
+        top2.add(btnRf);
         pTop1.add(txt1);
         pTop1.add(btnAddFr);
         pTop.add(pTop1);
-        pTop.add(lbIsOnl);
+        pTop.add(top2);
         friendsPane.add(pTop, BorderLayout.NORTH);
         vcHead = new Vector();
         vcHead.add("Player");
@@ -108,6 +98,31 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
         js = new JScrollPane(tabFr);
         js.setSize(this.getWidth(), this.getHeight());
         friendsPane.add(js, BorderLayout.CENTER);
+        process();
+        btnAddFr.addActionListener((e) -> {
+            if (txt1.getText().equals(p.getU().getHoten())) {
+                JOptionPane.showMessageDialog(rootPane, "Invalid");
+            } else {
+                Users u = new Users();
+                u.setHoten(txt1.getText());
+                System.out.println(u.getHoten());
+                Package p1 = new Package(p.getU(), "4");
+                p1.setU2(u);
+                //if(p1.getFl()!=null)
+                p1.setFl(fl);
+                ClientControl control1 = new ClientControl();
+                control1.openConnection();
+                control1.sendData(p1);
+                String rs = control1.receiveData();
+                if (rs.equals("ok")) {
+                    JOptionPane.showMessageDialog(rootPane, "Success");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Invalid");
+                }
+                control1.closeConnection();
+            }
+
+        });
     }
 
     /**
@@ -218,60 +233,61 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
 //        TableCellRenderer cellRenderer = createCellRenderer(data);
 //        table.setDefaultRenderer(Object.class, cellRenderer);
 //    }
+    public void process() {
 
-    @Override
-    public void run() {
-        while (true) {
-
-            try {
-                Package tmp = new Package(p.getU(), "2");
-                control.sendData(tmp);
+        try {
+            Package tmp = new Package(p.getU(), "2");
+            ClientControl control=new ClientControl();
+            control.openConnection();
+            control.sendData(tmp);
 //                if(control.receiveFL()!=null)
-                fl = control.receiveFL();
-                if (fl != null) {
-                    lf = fl.getLf();
-                    if (fl.getLf().size() == 0) {
-                        lbIsOnl.setText("  You have no friend");
-                    } else {
-                        int count = 0;
-                        for (Users u : lf) {
+            fl = control.receiveFL();
+            control.closeConnection();
+            if (fl != null) {
+                lf = fl.getLf();
+                if (fl.getLf().size() == 0) {
+                    lbIsOnl.setText("  You have no friend                                                                          ");
+                } else {
+                    int count = 0;
+                    for (Users u : lf) {
+                        if (u.getIsOnl() == 1) {
+                            count++;
+                        }
+                    }
+                    lbIsOnl.setText("  " + count + " FRIENDS IS ONLINE                                                                         ");
+
+                    tabFr.getTableHeader().setFont(new Font("Arial", Font.BOLD, 20));
+                    vcData = new Vector();
+
+                    for (Users u : lf) {
+                        if (u.getHoten() != p.getU().getHoten()) {
+                            Vector row = new Vector();
+                            row.add(u.getHoten());
+                            row.add(u.getPoints());
                             if (u.getIsOnl() == 1) {
-                                count++;
+                                row.add("Online");
+                            } else {
+                                row.add("Offline");
                             }
+                            vcData.add(row);
                         }
-                        lbIsOnl.setText("  "+count + " FRIENDS IS ONLINE");
+                        System.out.println(u.getHoten() + u.getIsOnl());
+                    }
 
-                        tabFr.getTableHeader().setFont(new Font("Arial", Font.BOLD, 20));
-                        vcData = new Vector();
-
-                        for (Users u : lf) {
-                            if (u.getHoten() != p.getU().getHoten()) {
-                                Vector row = new Vector();
-                                row.add(u.getHoten());
-                                row.add(u.getPoints());
-                                if (u.getIsOnl() == 1) {
-                                    row.add("Online");
-                                } else {
-                                    row.add("Offline");
-                                }
-                                vcData.add(row);
-                            }
-                            System.out.println(u.getHoten() + u.getIsOnl());
-                        }
-
-                        tabFr.setModel(new DefaultTableModel(vcData, vcHead));
+                    tabFr.setModel(new DefaultTableModel(vcData, vcHead));
 //                        tabFr.getColumnModel().getColumn(0).setPreferredWidth(500);
 //                        tabFr.getColumnModel().getColumn(1).setPreferredWidth(400);
 //                        tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
 
-                        mod.setRowCount(0);
-                        Thread.sleep(1000);
-                    }
-                }
+                    mod.setRowCount(0);
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                }
             }
+            control.closeConnection();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 }

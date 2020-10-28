@@ -130,6 +130,10 @@ public class ServerControl {
             if (rs.next()) {
                 u.setId(rs.getInt("id"));
                 u.setHoten(rs.getString("hoten"));
+                String sql1="UPDATE users SET isOnl=1 WHERE id=?";
+                PreparedStatement ps1=con.prepareStatement(sql1);
+                ps1.setInt(1, rs.getInt("id"));
+                ps1.executeUpdate();
                 return true;
             }
         } catch (Exception e) {
@@ -211,26 +215,28 @@ public class ServerControl {
         try {
             String sql="SELECT * FROM users WHERE hoten=?";
             PreparedStatement ps=con.prepareStatement(sql);
-            ps.setString(1, p.getU().getHoten());
+            ps.setString(1, p.getU2().getHoten());
             ResultSet rs=ps.executeQuery();
-            System.out.println(rs.getString("hoten"));
             if(rs.next()){
+                System.out.println(rs.getString("hoten"));
                 System.out.println(rs.getInt("id"));
                 if(p.getFl()!=null){
+                    System.out.println("aa");
                     for(Users i:p.getFl().getLf()){
-                    if(rs.getString("hoten").equals(i.getHoten()))
-                        return false;
+                        if(p.getU2().getHoten().equals(i.getHoten()))
+                            return false;
                     }
                     int temp=rs.getInt("id");
                     String sql1="INSERT INTO isfriend VALUES(?,?)";
                     PreparedStatement ps1=con.prepareStatement(sql1);
+                    System.out.println(p.getU().getId()+" "+temp);
                     ps1.setInt(1, p.getU().getId());
                     ps1.setInt(2, temp);
                     ps1.executeUpdate();
+                    return true;
                 }
                 
             }
-            else return false;
         } catch (SQLException ex) {
             Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
         }
