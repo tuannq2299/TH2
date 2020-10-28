@@ -16,6 +16,9 @@ public class Package implements Serializable{
         this.check = check;
     }
 
+    public Package() {
+    }
+    
     public FriendsList getFl() {
         return fl;
     }

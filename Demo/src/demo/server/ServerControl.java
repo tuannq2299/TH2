@@ -109,6 +109,10 @@ public class ServerControl {
                     os.flush();
                 }
             }
+            else if(check.equals("off")){
+                logOut(temp);
+                System.out.println("aaa");
+            }
             System.out.println(check);
             //clientSocket.close();
         } catch (IOException ex) {
@@ -142,7 +146,20 @@ public class ServerControl {
         return false;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    private void logOut(Package p){
+        String sql="UPDATE users SET isOnl=0 WHERE hoten=?";
+        try{
+            PreparedStatement ps=con.prepareStatement(sql);
+            ps.setString(1, p.getU().getHoten());
+            ps.executeUpdate();
+        }
+        catch(Exception e){
+            
+        }
+        
+        
+    }
+    
     private ArrayList<Users> listFr(Users u) {
         String sql1 = "SELECT * FROM isfriend,users WHERE users.id=isfriend.id1 AND users.id=?";
         String sql2 = "SELECT * FROM isfriend,users WHERE users.id=isfriend.id2 AND users.id=?";

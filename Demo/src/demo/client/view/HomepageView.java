@@ -22,6 +22,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,7 +34,7 @@ import javax.swing.JTextField;
  *
  * @author Lenovo
  */
-public class HomepageView extends javax.swing.JFrame {
+public class HomepageView extends javax.swing.JFrame{
 
     /**
      * Creates new form HomepageView
@@ -122,6 +125,32 @@ public class HomepageView extends javax.swing.JFrame {
                 control1.closeConnection();
             }
 
+        });
+        this.addWindowListener(new WindowAdapter() {
+//            @Override
+//            public void windowClosed(WindowEvent e){
+//                super.windowClosed(e);
+//                System.out.println("off1");
+//                ClientControl control=new ClientControl();
+//                control.openConnection();
+//                Package temp=new Package();
+//                temp.setCheck("off");
+//                temp.setU(p.getU());
+//                control.sendData(temp);
+//                control.closeConnection();
+//            }
+            @Override
+            public void windowClosing(WindowEvent e){
+                super.windowClosed(e);
+                System.out.println("off1");
+                ClientControl control=new ClientControl();
+                control.openConnection();
+                Package temp=new Package();
+                temp.setCheck("off");
+                temp.setU(p.getU());
+                control.sendData(temp);
+                control.closeConnection();
+            }
         });
     }
 
