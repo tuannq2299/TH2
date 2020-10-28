@@ -81,6 +81,17 @@ public class ClientControl {
         }
         return fl;
     }
+    public Package receiveChallenge(){
+        Package rq=null;
+        try{
+            is=new ObjectInputStream(mySocket.getInputStream());
+            Package temp=(Package) is.readObject();
+        }
+        catch(Exception e){
+            
+        }
+        return rq;
+    }
     public boolean closeConnection(){
         try{
             mySocket.close();

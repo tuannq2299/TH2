@@ -22,9 +22,12 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.ObjectInputStream;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,7 +37,7 @@ import javax.swing.JTextField;
  *
  * @author Lenovo
  */
-public class HomepageView extends javax.swing.JFrame{
+public class HomepageView extends javax.swing.JFrame implements Runnable{
 
     /**
      * Creates new form HomepageView
@@ -49,7 +52,7 @@ public class HomepageView extends javax.swing.JFrame{
     Vector vcHead;
     Vector vcData;
 
-    public HomepageView(Package p) {
+    public HomepageView(Package p){
         
         this.p = p;
         mod = new DefaultTableModel();
@@ -98,6 +101,24 @@ public class HomepageView extends javax.swing.JFrame{
             }
         };
         tabFr.setFont(new Font("Arial", Font.PLAIN, 16));
+        tabFr.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e){
+                int row=tabFr.getSelectedRow();
+                String hoten=(String) tabFr.getModel().getValueAt(row, 0);
+                Package rq=new Package();
+                Users u=new Users();
+                u.setHoten(hoten);
+                rq.setU2(u);
+                rq.setU(p.getU());
+                rq.setCheck("challenge");
+                ClientControl control=new ClientControl();
+                control.openConnection();
+                control.sendData(rq);
+                control.closeConnection();
+            }
+            
+        });
+        
         js = new JScrollPane(tabFr);
         js.setSize(this.getWidth(), this.getHeight());
         friendsPane.add(js, BorderLayout.CENTER);
@@ -126,27 +147,14 @@ public class HomepageView extends javax.swing.JFrame{
             }
 
         });
+        
         this.addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosed(WindowEvent e){
-//                super.windowClosed(e);
-//                System.out.println("off1");
-//                ClientControl control=new ClientControl();
-//                control.openConnection();
-//                Package temp=new Package();
-//                temp.setCheck("off");
-//                temp.setU(p.getU());
-//                control.sendData(temp);
-//                control.closeConnection();
-//            }
             @Override
             public void windowClosing(WindowEvent e){
                 super.windowClosed(e);
-                System.out.println("off1");
                 ClientControl control=new ClientControl();
                 control.openConnection();
                 Package temp=new Package();
-                temp.setCheck("off");
                 temp.setU(p.getU());
                 control.sendData(temp);
                 control.closeConnection();
@@ -318,5 +326,15 @@ public class HomepageView extends javax.swing.JFrame{
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void run() {
+        while(true){
+            ClientControl control=new ClientControl();
+            control.openConnection();
+            String s=control.receiveData();
+        }
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

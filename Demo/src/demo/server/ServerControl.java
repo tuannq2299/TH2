@@ -113,6 +113,9 @@ public class ServerControl {
                 logOut(temp);
                 System.out.println("aaa");
             }
+            else if(check.equals("challenge")){
+                
+            }
             System.out.println(check);
             //clientSocket.close();
         } catch (IOException ex) {
@@ -213,11 +216,12 @@ public class ServerControl {
             if (rs.next()) {
                 return true;
             } else {
-                String sql1 = "INSERT INTO users(hoten,username,pass) VALUES(?,?,?)";
+                String sql1 = "INSERT INTO users(hoten,username,pass,points) VALUES(?,?,?,?)";
                 PreparedStatement ps1 = con.prepareStatement(sql1);
                 ps1.setString(1, u.getHoten());
                 ps1.setString(2, u.getUsername());
                 ps1.setString(3, u.getPass());
+                ps1.setFloat(4, 0);
                 ps1.executeUpdate();
                 return false;
             }
