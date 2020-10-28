@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -98,6 +99,17 @@ public class ServerControl {
                 }
                 System.out.println(check);
             }
+            else if(check.equals("4")){
+                if(addFriend(temp)){
+                    os.writeObject("ok");
+                    os.flush();
+                }
+                else{
+                    os.writeObject("false");
+                    os.flush();
+                }
+            }
+            System.out.println(check);
             //clientSocket.close();
         } catch (IOException ex) {
             Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -193,5 +205,36 @@ public class ServerControl {
         }
         return true;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private boolean addFriend(Package p){
+        try {
+            String sql="SELECT * FROM users WHERE hoten=?";
+            PreparedStatement ps=con.prepareStatement(sql);
+            ps.setString(1, p.getU().getHoten());
+            ResultSet rs=ps.executeQuery();
+            System.out.println(rs.getString("hoten"));
+            if(rs.next()){
+                System.out.println(rs.getInt("id"));
+                if(p.getFl()!=null){
+                    for(Users i:p.getFl().getLf()){
+                    if(rs.getString("hoten").equals(i.getHoten()))
+                        return false;
+                    }
+                    int temp=rs.getInt("id");
+                    String sql1="INSERT INTO isfriend VALUES(?,?)";
+                    PreparedStatement ps1=con.prepareStatement(sql1);
+                    ps1.setInt(1, p.getU().getId());
+                    ps1.setInt(2, temp);
+                    ps1.executeUpdate();
+                }
+                
+            }
+            else return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(ServerControl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+        
     }
 }

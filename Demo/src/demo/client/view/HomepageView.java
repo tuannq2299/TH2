@@ -1,5 +1,6 @@
 package demo.client.view;
 
+import com.sun.imageio.plugins.jpeg.JPEG;
 import demo.client.control.ClientControl;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,6 +18,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import demo.client.model.FriendsList;
 import demo.client.model.Package;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -29,7 +37,7 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
      */
     Package p;
     ArrayList<Users> lf;
-    //FriendsList f;
+    FriendsList fl;
     DefaultTableModel mod;
     JLabel lbIsOnl;
     JTable tabFr;
@@ -37,8 +45,9 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     Vector vcHead;
     Vector vcData;
     ClientControl control;
+
     public HomepageView(Package p) {
-        this.control=new ClientControl();
+        this.control = new ClientControl();
         control.openConnection();
         this.p = p;
         mod = new DefaultTableModel();
@@ -47,11 +56,39 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
         friendsPane.setLayout(new BorderLayout(20, 20));
         lbIsOnl = new JLabel();
         lbIsOnl.setFont(new Font(lbIsOnl.getName(), Font.PLAIN, 18));
-        friendsPane.add(lbIsOnl, BorderLayout.NORTH);
-                        vcHead = new Vector();
-                        vcHead.add("Player");
-                        vcHead.add("Points");
-                        vcHead.add("Status");
+        JPanel pTop=new JPanel(new GridLayout(2, 1));
+        JPanel pTop1=new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        JLabel lblA=new JLabel("THÊM BẠN");
+        lblA.setFont(new Font(lblA.getName(), Font.PLAIN, 16));
+        pTop1.add(lblA);
+        JTextField txt1=new JTextField(40);
+        JButton btnAddFr=new JButton("ADD");
+        btnAddFr.addActionListener((e) -> {
+            Users u=new Users();
+            u.setHoten(txt1.getText());
+            System.out.println(u.getHoten());
+            Package p1=new Package(p.getU(),"4");
+            p1.setU2(u);
+            if(p1.getFl()!=null)
+                p1.setFl(fl);
+            control.sendData(p1);
+            String rs=control.receiveData();
+            if(rs.equals("ok")){
+                JOptionPane.showMessageDialog(rootPane, "Success");
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane, "Invalid");
+            }
+        });
+        pTop1.add(txt1);
+        pTop1.add(btnAddFr);
+        pTop.add(pTop1);
+        pTop.add(lbIsOnl);
+        friendsPane.add(pTop, BorderLayout.NORTH);
+        vcHead = new Vector();
+        vcHead.add("Player");
+        vcHead.add("Points");
+        vcHead.add("Status");
         tabFr = new JTable(mod) {
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int rowIndex,
@@ -72,7 +109,6 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
         js.setSize(this.getWidth(), this.getHeight());
         friendsPane.add(js, BorderLayout.CENTER);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -186,25 +222,24 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
     @Override
     public void run() {
         while (true) {
-            
+
             try {
                 Package tmp = new Package(p.getU(), "2");
                 control.sendData(tmp);
-                FriendsList fl;
 //                if(control.receiveFL()!=null)
-                    fl=control.receiveFL();
-                if(fl!=null){
+                fl = control.receiveFL();
+                if (fl != null) {
                     lf = fl.getLf();
                     if (fl.getLf().size() == 0) {
-                        lbIsOnl.setText("You have no friend");
+                        lbIsOnl.setText("  You have no friend");
                     } else {
-                        int count=0;
-                        for(Users u:lf){
-                            if(u.getIsOnl()==1){
+                        int count = 0;
+                        for (Users u : lf) {
+                            if (u.getIsOnl() == 1) {
                                 count++;
                             }
                         }
-                        lbIsOnl.setText(count + " FRIENDS IS ONLINE");
+                        lbIsOnl.setText("  "+count + " FRIENDS IS ONLINE");
 
                         tabFr.getTableHeader().setFont(new Font("Arial", Font.BOLD, 20));
                         vcData = new Vector();
@@ -228,7 +263,7 @@ public class HomepageView extends javax.swing.JFrame implements Runnable {
 //                        tabFr.getColumnModel().getColumn(0).setPreferredWidth(500);
 //                        tabFr.getColumnModel().getColumn(1).setPreferredWidth(400);
 //                        tabFr.getColumnModel().getColumn(2).setPreferredWidth(400);
-                        
+
                         mod.setRowCount(0);
                         Thread.sleep(1000);
                     }

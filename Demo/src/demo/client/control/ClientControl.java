@@ -39,7 +39,8 @@ public class ClientControl {
         try{
             os=new ObjectOutputStream(mySocket.getOutputStream());
             os.writeObject(p);
-            //System.out.println(p.getCheck());
+            if(p.getU2()!=null)
+                System.out.println(p.getCheck()+" "+p.getU2().getHoten());
             //os.flush();
         }
         catch(Exception e){

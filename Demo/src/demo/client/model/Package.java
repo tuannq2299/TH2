@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class Package implements Serializable{
     private Users u;
+    private Users u2;
     private String check;
     private FriendsList fl;
     public Package(Users u, String check) {
@@ -37,6 +38,14 @@ public class Package implements Serializable{
 
     public void setCheck(String check) {
         this.check = check;
+    }
+
+    public Users getU2() {
+        return u2;
+    }
+
+    public void setU2(Users u2) {
+        this.u2 = u2;
     }
     
 }
