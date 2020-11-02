@@ -37,7 +37,7 @@ import javax.swing.JTextField;
  *
  * @author Lenovo
  */
-public class HomepageView extends javax.swing.JFrame implements Runnable{
+public class HomepageView extends javax.swing.JFrame{
 
     /**
      * Creates new form HomepageView
@@ -101,24 +101,6 @@ public class HomepageView extends javax.swing.JFrame implements Runnable{
             }
         };
         tabFr.setFont(new Font("Arial", Font.PLAIN, 16));
-        tabFr.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e){
-                int row=tabFr.getSelectedRow();
-                String hoten=(String) tabFr.getModel().getValueAt(row, 0);
-                Package rq=new Package();
-                Users u=new Users();
-                u.setHoten(hoten);
-                rq.setU2(u);
-                rq.setU(p.getU());
-                rq.setCheck("challenge");
-                ClientControl control=new ClientControl();
-                control.openConnection();
-                control.sendData(rq);
-                control.closeConnection();
-            }
-            
-        });
-        
         js = new JScrollPane(tabFr);
         js.setSize(this.getWidth(), this.getHeight());
         friendsPane.add(js, BorderLayout.CENTER);
@@ -159,6 +141,23 @@ public class HomepageView extends javax.swing.JFrame implements Runnable{
                 control.sendData(temp);
                 control.closeConnection();
             }
+        });
+        tabFr.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e){
+                int row=tabFr.getSelectedRow();
+                String hoten=(String) tabFr.getModel().getValueAt(row, 0);
+                Package rq=new Package();
+                Users u=new Users();
+                u.setHoten(hoten);
+                rq.setU2(u);
+                rq.setU(p.getU());
+                rq.setCheck("challenge");
+                ClientControl control=new ClientControl();
+                control.openConnection();
+                control.sendData(rq);
+                
+            }
+            
         });
     }
 
@@ -328,13 +327,5 @@ public class HomepageView extends javax.swing.JFrame implements Runnable{
 
     }
 
-    @Override
-    public void run() {
-        while(true){
-            ClientControl control=new ClientControl();
-            control.openConnection();
-            String s=control.receiveData();
-        }
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 }

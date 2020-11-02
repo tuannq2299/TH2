@@ -25,7 +25,7 @@ public class ServerControl {
 
     protected Connection con;
     protected ServerSocket myServer;
-    protected int serverPort = 1234;
+    protected int serverPort = 5151;
     ObjectInputStream is;
     ObjectOutputStream os;
     ArrayList<Users> cmd;
@@ -113,9 +113,10 @@ public class ServerControl {
                 logOut(temp);
                 System.out.println("aaa");
             }
-            else if(check.equals("challenge")){
-                
-            }
+//            else if(check.equals("challenge")){
+//                os.writeObject(temp);
+//                os.flush();
+//            }
             System.out.println(check);
             //clientSocket.close();
         } catch (IOException ex) {

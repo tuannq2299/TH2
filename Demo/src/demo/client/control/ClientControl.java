@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class ClientControl {
     private Socket mySocket;
     private String serverHost="localhost";
-    private int serverPort=1234;
+    private int serverPort=5151;
     ObjectOutputStream os;
     ObjectInputStream is;
     public ClientControl() {
